@@ -1,0 +1,119 @@
+package com.ibsbg.entity;
+
+import java.io.Serializable;
+import java.lang.String;
+import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import com.ibsbg.base.Constants;
+
+
+@Entity
+@NamedQueries({@NamedQuery(name="findAllUsers", query = "select u from User u"),
+               @NamedQuery(name="findUserByDepartment", query="select u from User u where u.department = :department"),
+               @NamedQuery(name="findUserByAddress", query="select u from User u where u.address.city = :city"),
+			   @NamedQuery(name="findRegisteredUser", query="select u from User u where u.userName=:userName and u.password=:password"),
+			   @NamedQuery(name="findUserByUserName", query="select u from User u where u.userName = :userName")
+             })
+public class User implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int userid;
+	
+	@NotBlank(message=Constants.USER_FIRST_NAME_NOT_NULL_MESSAGE)
+	private String firstName;
+	@NotBlank(message=Constants.USER_LAST_NAME_NOT_NULL_MESSAGE)
+	private String lastName;
+	@NotBlank(message=Constants.USER_EMAIL_NOT_BLANK_MESSAGE)
+	@Pattern(regexp = "^[a-zA-Z0-9@.-]*$", message=Constants.USER_EMAIL_PATTERN_MESSAGE)
+	private String email;
+	@NotBlank(message=Constants.USER_PASSWORD_NOT_NULL_MESSAGE)
+	private String password;
+	@NotBlank(message=Constants.USER_USERNAME_NOT_NULL_MESSAGE)
+	private String userName;
+	
+	@ManyToOne(cascade=CascadeType.MERGE)
+	private Departments department;
+	
+	@ManyToOne(cascade=CascadeType.MERGE)
+	private Address address;
+	
+	@OneToOne(cascade=CascadeType.MERGE)
+	private Role role;
+	
+	public User() {
+		super();
+	}   
+	
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public int getUserid() {
+		return this.userid;
+	}
+
+	public void setUserid(int userid) {
+		this.userid = userid;
+	}   
+	public String getFirstName() {
+		return this.firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}   
+	public String getLastName() {
+		return this.lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}   
+	public String getEmail() {
+		return this.email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}   
+	public String getPassword() {
+		return this.password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}   
+	public String getUserName() {
+		return this.userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public Departments getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Departments department) {
+		this.department = department;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+}

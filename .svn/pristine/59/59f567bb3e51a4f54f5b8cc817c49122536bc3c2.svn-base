@@ -1,0 +1,77 @@
+package com.ibsbg.ejb.beans;
+
+import java.util.List;
+
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
+import javax.persistence.TypedQuery;
+
+import com.ibsbg.entity.Departments;
+import com.ibsbg.entity.User;
+
+@Stateless
+@LocalBean
+public class UserDAO {
+	
+	@PersistenceContext
+	private EntityManager em;
+	
+    public UserDAO() {
+    }
+
+    public User create(User user){
+    	em.persist(user);
+    	return user;
+    }
+    
+    public User update(User user){
+    	em.merge(user);
+    	return user;
+    }
+    
+    public void remove(int userid){
+    	em.remove(findUser(userid));
+    }
+    
+    public User findUser(int userid){
+    	User u = em.find(User.class, userid);
+    	return u;
+    }
+    
+    public List<User> printAllUsers(){
+    	return em.createNamedQuery("findAllUsers",User.class).getResultList();
+    }
+    
+    public List<User> printAllUsersByDepartment(Departments department){
+    	return em.createNamedQuery("findUserByDepartment",User.class).setParameter("department", department).getResultList();
+    }
+    
+    public List<User> printAllUsersByCity(String city){
+    	return em.createNamedQuery("findUserByAddress", User.class).setParameter("city", city).getResultList();
+    }
+    
+    public User findLoggedUser(String uName){
+    	return em.createNamedQuery("findLoggedUser", User.class).setParameter("userName", uName).getSingleResult();
+    }
+    //method for finding registered users
+    public List<User> findRegisteredUser(String password, String uName){
+		
+		TypedQuery<User> reg = em.createNamedQuery("findRegisteredUser", User.class);
+		reg.setParameter("userName", uName);
+		reg.setParameter("password", password);
+		List<User> result = reg.getResultList();
+		return result;
+	}
+    
+    public boolean validate(String userName, String password){
+		
+		if (!findRegisteredUser(password, userName).isEmpty()) {
+			return true;
+		}
+		
+		return false;
+	}
+}
