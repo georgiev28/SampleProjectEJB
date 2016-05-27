@@ -12,12 +12,12 @@ import com.ibsbg.entity.Role;
 
 @Stateless
 @LocalBean
-public class RoleDAO {
+public class RoleBean {
 	
 	@PersistenceContext
 	private EntityManager em;
 	
-	public RoleDAO() {
+	public RoleBean() {
 	}
 	
 	public Role addRole(Role role){

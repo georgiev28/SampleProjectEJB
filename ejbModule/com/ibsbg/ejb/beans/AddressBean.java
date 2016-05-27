@@ -11,12 +11,12 @@ import com.ibsbg.entity.Address;
 
 @Stateless
 @LocalBean
-public class AddressDAO {
+public class AddressBean {
 	
 	@PersistenceContext
 	private EntityManager em;
 	
-	public AddressDAO(){
+	public AddressBean(){
 	}
 	
 	public Address create(Address address){

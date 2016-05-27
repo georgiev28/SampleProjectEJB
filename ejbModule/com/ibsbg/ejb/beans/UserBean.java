@@ -14,13 +14,12 @@ import com.ibsbg.entity.User;
 
 @Stateless
 @LocalBean
-public class UserDAO {
+public class UserBean {
 	
 	@PersistenceContext
 	private EntityManager em;
 	
-    public UserDAO() {
-    }
+    public UserBean() {}
 
     public User create(User user){
     	em.persist(user);

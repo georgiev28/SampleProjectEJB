@@ -13,12 +13,12 @@ import com.ibsbg.entity.Departments;
 
 @Stateless
 @LocalBean
-public class DepartmentsDAO {
+public class DepartmentsBean {
 	
 	@PersistenceContext
 	private EntityManager em;
 	
-	public DepartmentsDAO() {
+	public DepartmentsBean() {
 	}
 	
 	public Departments createDepartment(Departments dep){
